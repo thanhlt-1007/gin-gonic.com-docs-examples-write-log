@@ -3,6 +3,8 @@ package main
 import (
     "github.com/gin-gonic/gin"
     "net/http"
+    "os"
+    "io"
 )
 
 func getPingHandler(context *gin.Context) {
@@ -15,6 +17,11 @@ func getPingHandler(context *gin.Context) {
 }
 
 func main() {
+    file, _ := os.Create("gin.log")
+
+    gin.DisableConsoleColor()
+    gin.DefaultWriter = io.MultiWriter(file)
+
     engine := gin.Default()
     engine.GET("/ping", getPingHandler)
     engine.Run()
